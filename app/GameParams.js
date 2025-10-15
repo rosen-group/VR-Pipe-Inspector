@@ -1,0 +1,14 @@
+export const SPEED_CHANGE = 100;
+export const SPEED_MULTIPLIER = 0.2;
+export const PIPE_RADIUS = 10;
+export const PIPE_LENGTH = 100;
+export const ANOMALIES_PER_PIPE = 10;
+export const MIN_ANOMALY_SIZE = 1;
+export const MAX_ANOMALY_SIZE = 3;
+export const MAX_POINTS_PER_ANOMALY = 10;
+export const ANIMATION_TIME = 0.1;
+export const VALVE_RADIUS = 3;
+export const VALVES_PER_PIPE = 1;
+export const GAME_TIME = 60;
+export const BOUNCE_BACK_MULTIPLIER = 25;
+export const BOUNCE_RECOVERY_TIME = 3;

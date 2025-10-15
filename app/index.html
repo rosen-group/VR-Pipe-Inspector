@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>VR-Pipe-Inspector - Indie, Indie, Indie</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="icon" type="image/png" href="res/favicon/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="res/favicon/favicon.svg" />
+        <link rel="shortcut icon" href="res/favicon/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="res/favicon/apple-touch-icon.png" />
+		<link rel="manifest" href="vr-pipe-inspector.webmanifest" />
+		<style>
+			#blocker {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.5);
+			}
+
+			#instructions {
+				width: 100%;
+				height: 100%;
+
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+
+				text-align: center;
+				font-size: 14px;
+				cursor: pointer;
+			}
+
+			body {
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="blocker">
+			<div id="instructions">
+				<p style="font-size:36px">
+					Click to play
+				</p>
+				<p>
+					Move: WASD<br/>
+					Up: SPACE<br/>
+					Down: SHIFT<br/>
+					Look: MOUSE
+				</p>
+			</div>
+		</div>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../node_modules/three/build/three.module.js",
+					"three/addons/": "../node_modules/three/examples/jsm/"
+				}
+			}
+		</script>
+		<script>
+			var camera;
+			var renderer;
+			var scene;
+			var timer;
+		</script>
+		<script type="module" src="main.js"></script>
+    </body>
+</html>
