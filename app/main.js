@@ -1,6 +1,6 @@
 // Three.js REVISION 171
 import * as THREE from 'three';
-import { Controls } from './controls.js';
+import { Controls } from './Controls.js';
 import { UI } from './UI.js';
 import { Audio } from './Audio.js';
 import { Level } from './Level.js';
