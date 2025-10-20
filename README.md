@@ -17,7 +17,7 @@ This game can be played on Desktop in the browser with these controls:
 It can also be played with VR goggles on Desktop or mobile. The mobile VR view has a fixed speed and only supports looking around.
 
 # Getting Started
-To see this game in action, open this URL in your browser: [https://your-game-url.com](https://your-game-url.com)
+To see this game in action, open this URL in your browser: [https://legendary-barnacle-ez1pg33.pages.github.io/app/index.html](https://legendary-barnacle-ez1pg33.pages.github.io/app/index.html) 
 
 To run it locally, follow these steps:
 1.	Checkout repository
