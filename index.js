@@ -23,7 +23,7 @@ const server = https.createServer(pem, function (req, res) {
         return;
     }
 
-    fs.stat(filePath, (err, stats) => {
+    fs.stat(safePath, (err, stats) => {
         if (err) {
             res.statusCode = 404;
             res.end("404 Not Found");
@@ -31,7 +31,7 @@ const server = https.createServer(pem, function (req, res) {
         }
 
         if (stats.isFile()) {
-            fs.readFile(filePath, (err, content) => {
+            fs.readFile(safePath, (err, content) => {
                 if (err) {
                     res.statusCode = 500;
                     res.end("Internal Server Error");
