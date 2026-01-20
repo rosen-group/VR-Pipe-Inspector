@@ -16,7 +16,7 @@ const server = https.createServer(pem, function (req, res) {
         return;
     }
 
-    const safePath = path.normalize(path.join(__dirname, pathname));
+    const safePath = path.normalize(filePath);
     if (!safePath.startsWith(__dirname)) {
         res.write(403);
         res.end('Forbidden');
