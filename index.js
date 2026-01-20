@@ -4,7 +4,24 @@ const fs = require('fs');
 const path = require('path');
 
 const server = https.createServer(pem, function (req, res) {
-    const filePath = path.join(__dirname, '.', req.url);
+    const url = new URL(req.url, `https://${req.headers.host}`);
+    const pathname = decodeURIComponent(url.pathname);
+    const filePath = path.join(__dirname, '.', pathname);
+
+    if (pathname === '/') {
+        res.writeHead(308, {
+            Location: '/app/index.html'
+        });
+        res.end('Redirecting to /app/index.html');
+        return;
+    }
+
+    const safePath = path.normalize(path.join(__dirname, pathname));
+    if (!safePath.startsWith(__dirname)) {
+        res.write(403);
+        res.end('Forbidden');
+        return;
+    }
 
     fs.stat(filePath, (err, stats) => {
         if (err) {
@@ -20,7 +37,7 @@ const server = https.createServer(pem, function (req, res) {
                     res.end("Internal Server Error");
                     return;
                 }
-                if (req.url.endsWith('.js'))
+                if (url.href.endsWith('.js'))
                 {
                     res.setHeader('Content-Type', 'application/javascript');
                 }

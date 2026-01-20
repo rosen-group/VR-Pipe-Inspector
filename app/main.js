@@ -5,7 +5,7 @@ import { UI } from './UI.js';
 import { Audio } from './Audio.js';
 import { Level } from './Level.js';
 import { getActiveCamera, isGameOver } from './Core.js';
-import { MIN_ANOMALY_SIZE, MAX_ANOMALY_SIZE, MAX_POINTS_PER_ANOMALY, VALVE_RADIUS } from './GameParams.js';
+import { MIN_ANOMALY_SIZE, MAX_ANOMALY_SIZE, MAX_POINTS_PER_ANOMALY, VALVE_RADIUS, TIME_BETWEEN_ROUNDS } from './GameParams.js';
 
 const raycaster = new THREE.Raycaster();
 let lastPoints = 0;
@@ -16,6 +16,10 @@ let controls;
 let ui;
 let audio;
 let level;
+
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+});
 
 init();
 
@@ -34,11 +38,11 @@ function init() {
     scene = new THREE.Scene();
     
     controls = new Controls();
-    level = new Level();
     ui = new UI();
-    audio = new Audio();    
+    audio = new Audio();
+    reset();
 
-    timer = new THREE.Clock(false);
+    document.addEventListener('dblclick', reset);
 }
 
 function compareScores(a, b) {
@@ -71,6 +75,8 @@ function animate() {
         scores.sort(compareScores);
 
         ui.showScore(scores);
+        restartTimer.start();
+        setTimeout(reset, TIME_BETWEEN_ROUNDS * 1000);
     }
     level.animateAnimations();
     ui.refreshUi(lastPoints, totalPoints);
@@ -132,6 +138,17 @@ function tickIntersections() {
     }
 }
 
-const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-});
+function reset() {
+    lastPoints = 0;
+    totalPoints = 0;
+    gameEnded = false;
+    controls.reset();
+    ui.reset();
+    level = new Level();
+    timer = new THREE.Clock(false);
+    restartTimer = new THREE.Clock(false);
+}
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/app/sw.js');
+}

@@ -10,8 +10,8 @@ let moveRight = false;
 let moveUp = false;
 let moveDown = false;
 let prevTime = performance.now();
-const velocity = new THREE.Vector3();
-const direction = new THREE.Vector3();
+let velocity = new THREE.Vector3();
+let direction = new THREE.Vector3();
 
 class Controls {
     constructor() {
@@ -129,6 +129,18 @@ class Controls {
 
     getDirection(outVector) {
         return controls.getDirection(outVector);
+    }
+
+    reset() {
+        controls.object.position.x = 0.0;
+        controls.object.position.y = 0.0;
+        controls.object.position.z = 0.0;
+        controls.object.rotation.x = 0.0;
+        controls.object.rotation.y = 0.0;
+        controls.object.rotation.z = 0.0;
+        prevTime = performance.now();
+        velocity = new THREE.Vector3();
+        direction = new THREE.Vector3();
     }
 }
 
