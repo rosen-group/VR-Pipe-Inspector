@@ -6,6 +6,7 @@
     "run-dev-server": "node index.js"
   },
   "dependencies": {
+    "st": "^3.0.3",
     "three": "^0.180.0"
   },
   "devDependencies": {

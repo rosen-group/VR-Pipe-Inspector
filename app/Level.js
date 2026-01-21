@@ -4,7 +4,7 @@ import { PIPE_RADIUS, PIPE_LENGTH, ANOMALIES_PER_PIPE, VALVES_PER_PIPE, VALVE_RA
     SPEED_MULTIPLIER, ANIMATION_TIME, BOUNCE_BACK_MULTIPLIER, BOUNCE_RECOVERY_TIME } from './GameParams.js';
 
 const pipelineMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/pipeline.png'), side: THREE.DoubleSide });
-const corosionMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/corosion.png'), transparent: true });
+const corosionMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/corrosion.png'), transparent: true });
 const crackMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/cracks.png'), transparent: true });
 const waxMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/wax.png'), transparent: true });
 const gulliMaterials = [
@@ -28,6 +28,46 @@ let bounceTimer;
 
 class Level {
     constructor() {
+        if (pipelines.length > 0)
+        {
+            pipelines.forEach(p => {
+                scene.remove(p);
+            });
+
+            pipelines = [];
+        }
+
+        if (valves.length > 0)
+        {
+            valves.forEach(v => {
+                scene.remove(v);
+            });
+
+            valves = [];
+        }
+
+        if (anomalies.length > 0)
+        {
+            anomalies.forEach(a => {
+                scene.remove(a);
+            });
+
+            anomalies = [];
+        }
+
+        if (animations.length > 0)
+        {
+            animations.forEach(a => {
+                scene.remove(a);
+            });
+
+            animations = [];
+        }
+
+        if (pipeEnd !== undefined) {
+            scene.remove(pipeEnd);
+        }
+
         scene.add(new THREE.AmbientLight(0x404040));
 
         anomalyMaterials.push(corosionMaterial);
@@ -118,14 +158,9 @@ class Level {
     
     animateAnimations() {
         for (var i = 0; i < animations.length; i++) {
-            if (animations[i].userData.animationClock.getElapsedTime() - (animations[i].userData.animationIndex * ANIMATION_TIME) > 0) {
-                if (animations[i].userData.animationIndex < 4) {
-                    animations[i].userData.animationIndex++;
-                    animations[i].material = dataCloudMaterial[animations[i].userData.animationIndex].clone();
-                } else {
-                    animations.splice(i, 1);
-                    i--;
-                }
+            if (animations[i].userData.animationIndex < 4 && animations[i].userData.animationClock.getElapsedTime() - (animations[i].userData.animationIndex * ANIMATION_TIME) > 0) {
+                animations[i].userData.animationIndex++;
+                animations[i].material = dataCloudMaterial[animations[i].userData.animationIndex].clone();
             }
         }
     }
@@ -194,8 +229,11 @@ class Level {
         for (var i = 0; i < ANOMALIES_PER_PIPE; i++) {
             this.createAnomaly(zOffset);
         }
-        for (var i = 0; i < VALVES_PER_PIPE; i++) {
-            this.createValve(zOffset);
+        if (zOffset < 0)
+        {
+            for (var i = 0; i < VALVES_PER_PIPE; i++) {
+                this.createValve(zOffset);
+            }
         }
     
         return cylinder;

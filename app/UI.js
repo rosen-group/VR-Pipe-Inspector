@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { getActiveCamera, isGameOver, isMobileDevice } from './Core.js';
-import { GAME_TIME, BOUNCE_RECOVERY_TIME } from './GameParams.js';
+import { GAME_TIME, BOUNCE_RECOVERY_TIME, TIME_BETWEEN_ROUNDS } from './GameParams.js';
 
 const loader = new FontLoader();
 
@@ -15,6 +15,7 @@ let xrCrosshair;
 let bouncePlane;
 let xrBouncePlane;
 let bounceTimer;
+let scoreMesh;
 
 class UI {
     constructor() {
@@ -32,7 +33,7 @@ class UI {
         crosshair.position.z = -5;
         crosshair.rotation.y = Math.sin(Math.PI);
 
-        const geometry = new THREE.PlaneGeometry(5, 5);
+        const geometry = new THREE.PlaneGeometry(10, 10);
         const material = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 });
         bouncePlane = new THREE.Mesh(geometry, material);
         camera.add(bouncePlane);
@@ -57,7 +58,7 @@ class UI {
     
     refreshUi(lastPoints, totalPoints) {
         if (gui !== undefined) {
-            if (timer.getElapsedTime() - lastGuiRefresh > 1 && GAME_TIME - timer.getElapsedTime() > -3) {
+            if (timer.getElapsedTime() - lastGuiRefresh > 1) {
                 gui.geometry = createTextGeometry(lastPoints, totalPoints);
                 if (xrGui === undefined) {
                     let xrCamera = renderer.xr.getCamera();
@@ -100,6 +101,11 @@ class UI {
         }
     }
 
+    reset() {
+        camera.remove(scoreMesh);
+        lastGuiRefresh = -1;
+    }
+
     showScore(scores) {
         let scoreText = 'Highscore (Top 10)\n';
         for (var i = 0; i < Math.min(scores.length, 10); i++) {
@@ -110,7 +116,7 @@ class UI {
             0.03
         ));
         let scoreMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-        let scoreMesh = new THREE.Mesh(scoreGeometry, scoreMaterial);
+        scoreMesh = new THREE.Mesh(scoreGeometry, scoreMaterial);
         scoreMesh.position.z = -1;
         scoreMesh.position.y = 0.3;
         camera.add(scoreMesh);
@@ -136,13 +142,17 @@ function createTextGeometry(lastPoints, totalPoints) {
     if (isMobileDevice()) {
         speed = 1;
     }
-    return new THREE.ShapeGeometry(font.generateShapes(
-        `last points:   ${lastPoints.toFixed(1)}\n` +
+
+    let text = `last points:   ${lastPoints.toFixed(1)}\n` +
         `total points: ${totalPoints.toFixed(1)}\n` +
         `speed:         ${speed.toFixed(1)}\n` +
-        `time left:      ${(isGameOver() ? 'GAME OVER!' : (GAME_TIME - timer.getElapsedTime()).toFixed(1))}`,
-        0.03
-    ));
+        `time left:      ${(isGameOver() ? 'GAME OVER!' : (GAME_TIME - timer.getElapsedTime()).toFixed(1) + 's')}`;
+    if (isGameOver())
+    {
+        text += `\n\nGame will restart in: ${(TIME_BETWEEN_ROUNDS - restartTimer.getElapsedTime()).toFixed(1)}s`;
+    }
+
+    return new THREE.ShapeGeometry(font.generateShapes(text, 0.03));
 }
 
 function createText() {
