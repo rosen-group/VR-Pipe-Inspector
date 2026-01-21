@@ -150,5 +150,5 @@ function reset() {
 }
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/app/sw.js');
+    navigator.serviceWorker.register('/VR-Pipe-Inspector/app/sw.js');
 }

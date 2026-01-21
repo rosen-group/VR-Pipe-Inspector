@@ -23,4 +23,4 @@ To run it locally, follow these steps:
 1.	Checkout repository
 2.	Run npm install
 3.	Run npm run-dev-server
-4.	Open https://localhost/app/index.html in browser
+4.	Open https://localhost/VR-Pipe-Inspector/app/index.html in browser
