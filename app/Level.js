@@ -4,7 +4,7 @@ import { PIPE_RADIUS, PIPE_LENGTH, ANOMALIES_PER_PIPE, VALVES_PER_PIPE, VALVE_RA
     SPEED_MULTIPLIER, ANIMATION_TIME, BOUNCE_BACK_MULTIPLIER, BOUNCE_RECOVERY_TIME } from './GameParams.js';
 
 const pipelineMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/pipeline.png'), side: THREE.DoubleSide });
-const corosionMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/corosion.png'), transparent: true });
+const corosionMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/corrosion.png'), transparent: true });
 const crackMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/cracks.png'), transparent: true });
 const waxMaterial = new THREE.MeshBasicMaterial({ map: getTexturesFromAtlasFile('res/wax.png'), transparent: true });
 const gulliMaterials = [

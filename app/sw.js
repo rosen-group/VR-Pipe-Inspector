@@ -22,7 +22,7 @@ const appShellFiles = [
   '/app/res/pipeline.png',
   '/app/res/wax.png',
   '/app/res/gulli_side.png',
-  '/app/res/corosion.png',
+  '/app/res/corrosion.png',
   '/app/res/gulli.png',
   '/app/res/cracks.png',
   '/app/res/data_cloud.png',
